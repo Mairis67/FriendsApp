@@ -1,9 +1,19 @@
+{% extends 'layout.twig' %}
+{% block content %}
+
 <a href="/articles">Back</a>
 
 <h1>{{ article.title }}</h1> <small>(<a href="/articles/{{ article.id }}/edit">Edit</a>)</small>
+    <p>Likes: {{ articleLikes }}</p>
+
+    <form action="/articles/{{ article.id }}/like" method="post">
+        <button type="submit">+</button>
+    </form>
 
 <p>{{ article.description }}</p>
 
 <p>
     <small>{{ article.createdAt }}</small>
 </p>
+
+{% endblock %}

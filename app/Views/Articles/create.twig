@@ -1,15 +1,30 @@
+{% extends 'layout.twig' %}
+{% block content %}
+
 <a href="/articles">Back</a>
 
 <form action="/articles" method="post">
     <div>
         <label for="title">Title</label>
-        <input type="text" id="title" name="title">
+        <input type="text" id="title" name="title" value="{{ inputs.title }}">
+        {% if errors.title %}
+            <p style="color: red">
+                <small>{{ errors.title[0] }}</small>
+            </p>
+        {% endif %}
     </div>
     <div>
         <label for="description">Description</label>
-        <textarea name="description" id="description"></textarea>
+        <textarea name="description" id="description">{{ inputs.description }}</textarea>
+        {% if errors.description %}
+            <p style="color: red">
+                <small>{{ errors.description[0] }}</small>
+            </p>
+        {% endif %}
     </div>
     <div>
         <button type="submit">Create</button>
     </div>
 </form>
+
+{% endblock %}

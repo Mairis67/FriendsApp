@@ -6,6 +6,7 @@
 <form method="post" action="/">
     <button type="submit" class="button_box">Log out</button>
 </form>
+{% endif  %}
 
 <ul>
     {% for user in users %}
@@ -15,8 +16,6 @@
     {% endfor %}
 </ul>
 
-{% else %}
-
 <div>
     <a href="/users/login">Login</a>
 </div>
@@ -25,4 +24,4 @@
     <a href="/users/register">Register</a>
 </div>
 
-{% endif %}
+{#{% endif %}#}

@@ -49,43 +49,37 @@ class AuthController
         return new View('Users/login');
     }
 
+
+    /// VISS SLIKTI EL VE
     public function login(): Redirect
     {
-        if(isset($_POST['submit'])) {
-            $userQuery = Database::connection()
-                ->createQueryBuilder()
-                ->select('*')
-                ->from('users')
-                ->where('email = ?')
-                ->setParameter(0, $_POST['email'])
-                ->executeQuery()
-                ->fetchAllAssociative();
+        $status = null;
 
-            if($userQuery !== null) {
-                $user = $userQuery;
+        $user = Database::connection()
+            ->createQueryBuilder()
+            ->select('*')
+            ->from('users')
+            ->where('email = ?')
+            ->setParameter(0,  $_POST['email'])
+            ->executeQuery()
+            ->fetchAllAssociative();
 
-                $hashedPassword = $user[0]['password'];
-                $checkedPassword = password_verify($_POST['password'], $hashedPassword);
+        if(count($user) === 0){
+            echo 'User not found!';
+        } else{
+            $hashedPassword = $user[0]['password'];
+            if(password_verify($_POST['password'], $hashedPassword) ){
 
-                if(!$checkedPassword) {
-                    return new Redirect('/login');
-                }
-
-                $userProfileQuery = Database::connection()
-                    ->createQueryBuilder()
-                    ->select('*')
-                    ->from('user_profiles')
-                    ->where('user_id = ?')
-                    ->setParameter(0, $user[0]['id'])
-                    ->executeQuery()
-                    ->fetchAllAssociative();
+                $status = new Redirect('/users/home/' . $user[0]['id']);
 
                 session_start();
-                $_SESSION['userid'] = htmlentities($user[0]['id']);
-            } else {
-                return new Redirect('/login');
+                $_SESSION['userid'] = $user[0]["id"];
+
+            } else{
+                echo 'Email or password is not correct!';
             }
         }
-        return new Redirect('users/');
+        return $status;
     }
+
 }

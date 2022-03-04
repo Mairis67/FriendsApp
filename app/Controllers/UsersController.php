@@ -87,7 +87,8 @@ class UsersController
             ->createQueryBuilder()
             ->select('*')
             ->from('users')
-            ->where('id = LAST_INSERT_ID()')
+            ->where('email = ?')
+            ->setParameter(0, $_POST['email'])
             ->executeQuery()
             ->fetchAllAssociative();
 
