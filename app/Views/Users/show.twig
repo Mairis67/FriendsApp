@@ -1,0 +1,18 @@
+<a href="/users">Show all users</a>
+<a href="/articles">Show all articles</a>
+
+{% if session.userid is defined %}
+
+<form method="post" action="/">
+    <button type="submit" class="button_box">Log out</button>
+</form>
+
+<h2>{{ user.name }} {{ user.surname }}</h2>
+<p>Email: {{ user.email }}</p>
+<p>Birthday: {{ user.birthday }}</p>
+<p>Profile created: {{ user.createdAt }}</p>
+
+{% else %}
+    <p>You don't have access to view profiles of other users.
+        Please, <a href="/users/login">log-in</a> or <a href="/users/login">register</a>. </p>
+{% endif %}
