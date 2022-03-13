@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Database;
 use App\Models\User;
-use App\Models\UserProfile;
-use App\Redirect;
 use App\View;
 
 class UsersController
@@ -26,7 +24,10 @@ class UsersController
                 $userData['email'],
                 $userData['password'],
                 $userData['created_at'],
-                $userData['id']
+                $userData['id'],
+                $userData['name'],
+                $userData['surname'],
+                $userData['birthday']
             );
         }
 
@@ -55,7 +56,7 @@ class UsersController
             ->executeQuery()
             ->fetchAssociative();
 
-        $user = new UserProfile(
+        $user = new User(
             $userProfileQuery['name'],
             $userProfileQuery['surname'],
             $userProfileQuery['birthday'],
@@ -68,39 +69,6 @@ class UsersController
         return new View('Users/show', [
             'user' => $user
         ]);
-    }
-
-    public function showRegister(): View
-    {
-        return new View('Users/register');
-    }
-
-    public function register(): Redirect
-    {
-        Database::connection()
-            ->insert('users', [
-                'email' => $_POST['email'],
-                'password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
-            ]);
-
-        $user = Database::connection()
-            ->createQueryBuilder()
-            ->select('*')
-            ->from('users')
-            ->where('email = ?')
-            ->setParameter(0, $_POST['email'])
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        Database::connection()
-            ->insert('user_profiles', [
-                'user_id' => (int) $user['id'],
-                'name' => $_POST['name'],
-                'surname' => $_POST['surname'],
-                'birthday' => $_POST['birthday']
-            ]);
-
-        return new Redirect('/users');
     }
 }
 

@@ -74,14 +74,6 @@ class ArticleController
         ]);
     }
 
-    public function create(): View
-    {
-        return new View('Articles/create', [
-            'errors' => Errors::getAll(),
-            'inputs' => $_SESSION['inputs'] ?? []
-        ]);
-    }
-
     public function store(): Redirect
     {
         // Validate form

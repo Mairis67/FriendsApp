@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Friends App</title>
+</head>
+<body>
+{% if username != "" %}
+<h3>Welcome, {{ username }}</h3>
+<a class="btn btn-primary" href="/users/signout">Sign out</a>
+<br><br>
+<a class="btn btn-primary" class="menu" href="/articles" id="apartments">Articles</a>
+<br><br>
+<a class="btn btn-primary" class="menu" href="/users">All users</a>
+{% endif %}
+</body>
+</html>

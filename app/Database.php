@@ -15,7 +15,7 @@ class Database
             $connectionParams = [
                 'dbname' => 'friendsapp',
                 'user' => 'root',
-                'password' => 'Dunkans&grecis88t',
+                'password' => '',
                 'host' => 'localhost',
                 'driver' => 'pdo_mysql',
             ];

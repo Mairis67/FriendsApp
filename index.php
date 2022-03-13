@@ -4,6 +4,9 @@ session_start();
 
 use App\Controllers\ArticleController;
 use App\Controllers\AuthController;
+use App\Controllers\HomePageController;
+use App\Controllers\LogOutController;
+use App\Controllers\RegisterController;
 use App\Controllers\UsersController;
 use App\Redirect;
 use App\View;
@@ -13,19 +16,24 @@ use Twig\Loader\FilesystemLoader;
 require_once 'vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+
+    $r->addRoute('GET', '/', [HomePageController::class, 'homePage']);
+    $r->addRoute('GET', '/users/home', [HomePageController::class, 'userHomePage']);
+
     // Users
     $r->addRoute('GET', '/users', [UsersController::class, 'index']);
     $r->addRoute('GET', '/users/{id:\d+}', [UsersController::class, 'show']);
 
     // Register
-    $r->addRoute('POST', '/users', [UsersController::class, 'register']);
-    $r->addRoute('GET', '/users/register', [UsersController::class, 'showRegister']);
+    $r->addRoute('GET', '/users/register', [RegisterController::class, 'showRegister']);
+    $r->addRoute('POST', '/users', [RegisterController::class, 'register']);
 
     // Login
-    $r->addRoute('GET', '/users/home/{id:\d+}', [AuthController::class, 'home']);
     $r->addRoute('GET', '/users/login', [AuthController::class, 'showLogin']);
-    $r->addRoute('POST', '/user/home', [AuthController::class, 'login']);
+    $r->addRoute('POST', '/user/login', [AuthController::class, 'login']);
 
+    // Logout
+    $r->addRoute('GET', '/users/logout', [LogOutController::class, 'logOut']);
 
     // Articles
     $r->addRoute('GET', '/articles', [ArticleController::class, 'index']);
@@ -80,7 +88,7 @@ switch ($routeInfo[0]) {
         $twig = new Environment($loader);
 
         if ($response instanceof View) {
-            echo $twig->render($response->getPath() . '.twig', $response->getVars());
+            echo $twig->render($response->getPath() . '.html', $response->getVars());
         }
 
         if($response instanceof Redirect) {
